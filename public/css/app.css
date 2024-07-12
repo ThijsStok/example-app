@@ -1,0 +1,52 @@
+/* app.css */
+
+/* Navbar */
+.navbar {
+    background-color: red; 
+    padding: 10px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #000;
+}
+
+.nav-link {
+    color: #000;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Card */
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.text-success {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.text-secondary {
+    color: #6c757d;
+}
+
+.container .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Creates a 3-column layout */
+    gap: 1rem; /* Adjust the gap between items as needed */
+}
