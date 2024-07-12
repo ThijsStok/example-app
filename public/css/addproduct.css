@@ -4,3 +4,7 @@
 .submit-button {
     margin-top: 20px; /* Space between the last field and the button */
 }
+
+img {
+    padding-top: 1rem;
+}

@@ -3,17 +3,19 @@
 @section('content')
 
 <link href="{{ asset('css/addproduct.css') }}" rel="stylesheet">
+<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+<script src="{{ asset('js/addproduct.js') }}"></script>
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
-    <a class="navbar-brand" href="#">Lend Stuff</a>
+    <a class="navbar-brand" href="/">Lend Stuff</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('lendmystuff') }}">My Stuff</a>
@@ -45,23 +47,18 @@
                     <textarea class="form-control" id="description" name="description" required></textarea>
                 </div>
                 <div class="form-group">
-                    <div class="container mt-3">
-                        <form action="{{ url('filterByCategory') }}" method="GET">
-                            <div class="form-group">
-                                <label for="categorySelect">Select Category:</label>
-                                <select class="form-control" id="categorySelect" name="category">
-                                    <option value="">All Categories</option>
-                                    @foreach ($commonCategories as $category)
-                                        <option value="{{ $category }}">{{ $category }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </form>
-                    </div>
+                    <label for="categorySelect">Select Category:</label>
+                    <select class="form-control" id="categorySelect" name="category">
+                        <option value="">All Categories</option>
+                        @foreach ($commonCategories as $category)
+                            <option value="{{ $category }}">{{ $category }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="image">Image:</label>
-                    <input type="file" class="form-control-file" id="image" name="image" required>
+                    <input type="file" class="form-control-file" id="image" name="image" required onchange="previewImage();">
+                    <img id="imagePreview" src="#" alt="Image Preview" style="max-width: 200px; max-height: 200px; display: none;">
                 </div>
                 <button type="submit" class="btn btn-primary">Add Product</button>
             </form>
