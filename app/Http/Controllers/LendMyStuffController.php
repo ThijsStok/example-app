@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product; // Assuming you have a Product model
-use App\Types\CategoruTypes;
+use App\types\categorytypes;
 use App\Models\Lend; // Assuming you have a Lend model
 use Illuminate\Support\Facades\Auth; // If you're using authentication
 
@@ -64,8 +64,6 @@ class LendMyStuffController extends Controller
 
     public function createProduct(){
         $products = Product::All();
-        $products = Product::All();
-        // Use CategoryTypes class to get common categories
         $commonCategories = CategoryTypes::$commonCategories;
         return view('addproduct', ['products' => $products, 'commonCategories'=> $commonCategories]);
     }

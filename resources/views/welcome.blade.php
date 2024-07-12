@@ -38,9 +38,8 @@
             <select class="form-control" id="categorySelect" name="category">
                 <option value="">All Categories</option>
                 @php
-                $uniqueCategories = $products->pluck('category')->unique();
                 @endphp
-                @foreach ($uniqueCategories as $category)
+                @foreach ($commonCategories as $category)
                     <option value="{{ $category }}">{{ $category }}</option>
                 @endforeach
             </select>
