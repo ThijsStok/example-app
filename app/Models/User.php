@@ -60,4 +60,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class, 'owner_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'owner_id');
+    }
+    public function borrower()
+    {
+        return $this->belongsTo(User::class, 'borrower_id');
+    }
 }

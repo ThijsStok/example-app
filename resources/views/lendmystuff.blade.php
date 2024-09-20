@@ -110,3 +110,23 @@
     </div>
 </div>
 
+<!-- Comments Card -->
+<div class="card mt-4">
+    <div class="card-header">
+        Comments
+    </div>
+    <div class="card-body">
+        @forelse (auth()->user()->comments as $comment)
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $comment->created_at->format('F d, Y') }}</h5>
+                    <p class="card-text">{{ $comment->comment }}</p>
+                    <p class="card-text"><small class="text-muted">From: {{ $comment->borrower->name }}</small></p>
+                    <p class="card-text"><small class="text-muted">On Product: {{ $comment->product->name }}</small></p>
+                </div>
+            </div>
+        @empty
+            <p class="card-text">You have not received any comments.</p>
+        @endforelse
+    </div>
+</div>

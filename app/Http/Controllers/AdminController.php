@@ -24,8 +24,14 @@ class AdminController extends Controller
     public function blockUser($id)
     {
         $user = User::findOrFail($id);
-        $user->update(['role' => 'blocked']);
 
-        return redirect()->route('admin.index')->with('success', 'User blocked successfully.');
+        // Delete all products associated with the user
+        $user->products()->delete();
+
+        // Block the user (assuming you have a 'blocked' attribute)
+        $user->blocked = true;
+        $user->save();
+
+        return redirect()->route('admin.index')->with('success', 'User blocked and all their products removed.');
     }
 }
