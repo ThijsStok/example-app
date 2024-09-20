@@ -30,7 +30,7 @@ class LendMyStuffController extends Controller
         ]);
     }
 
-        public function returnItem($id)
+    public function returnItem($id)
     {
         $item = Product::findOrFail($id);
         
@@ -38,11 +38,11 @@ class LendMyStuffController extends Controller
         if ($item->borrower_id != auth()->id()) {
             return back()->with('error', 'You are not authorized to return this item.');
         }
-
-        $item->borrower_id = null; // Mark as returned
+    
+        $item->state = 'waiting_for_acceptance'; // Set state to waiting for acceptance
         $item->save();
-
-        return back()->with('success', 'Item returned successfully.');
+    
+        return back()->with('success', 'Return initiated, waiting for owner to accept.');
     }
 
     public function borrow(Request $request)
@@ -61,6 +61,22 @@ class LendMyStuffController extends Controller
 
         return redirect()->back()->with('error', 'Product not found or already borrowed.');
     }
+
+    public function acceptReturn($id)
+{
+    $item = Product::findOrFail($id);
+    
+    // Check if the current user is the owner
+    if ($item->owner_id != auth()->id()) {
+        return back()->with('error', 'You are not authorized to accept this return.');
+    }
+
+    $item->borrower_id = null; // Clear borrower_id
+    $item->state = 'available'; // Mark as available
+    $item->save();
+
+    return back()->with('success', 'Item return accepted.');
+}
 
     public function createProduct(){
         $products = Product::All();

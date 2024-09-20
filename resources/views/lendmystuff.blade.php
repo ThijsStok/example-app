@@ -37,12 +37,23 @@
     <div class="card-body">
         <ul class="list-group">
             @forelse ($lending as $item)
-                <li class="list-group-item">
-                    Name: {{ $item->name }}
-                    <br>Category: {{ $item->category }}
-                    <br>Lent to: {{ $item->borrower->name }}
-                    <br>Lend Date: {{ $item->lend_date->format('F d, Y') }}
-                    <br>Return Date: {{ optional($item->return_date)->format('F d, Y') ?? 'Not Available' }}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        Name: {{ $item->name }}
+                        <br>Category: {{ $item->category }}
+                        <br>Lent to: {{ $item->borrower->name }}
+                        <br>Lend Date: {{ $item->lend_date->format('F d, Y') }}
+                        <br>Return Date: {{ optional($item->return_date)->format('F d, Y') ?? 'Not Available' }}
+                    </div>
+                    <div>
+                        @if ($item->state === 'waiting_for_acceptance')
+                            <form action="{{ route('acceptReturn', $item->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-success">Accept Return</button>
+                            </form>
+                        @endif
+                    </div>
                 </li>
             @empty
                 <li class="list-group-item">You are not lending out any items currently.</li>
@@ -63,14 +74,17 @@
                     Name: {{ $item->name }}
                     <br>Category: {{ $item->category }}
                     <br>Borrowed from: {{ $item->owner->name }}
+                                        @if ($item->state === 'borrowed')
+                        <form action="{{ route('returnProduct', $item->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-warning" style="float: right;">Return</button>
+                        </form>
+                    @elseif ($item->state === 'waiting_for_acceptance')
+                        <span class="badge badge-info" style="float: right; font-size:1rem;color:black">Waiting for Acceptance</span>
+                    @endif
                     <br>Lend Date: {{ $item->lend_date->format('F d, Y') }}
                     <br>Return Date: {{ optional($item->return_date)->format('F d, Y') ?? 'Not Available' }}
-                    <!-- Return Button Form -->
-                    <form action="{{ route('returnProduct', $item->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('PATCH')
-                        <button type="submit" class="btn btn-warning">Return</button>
-                    </form>
                 </li>
             @empty
                 <li class="list-group-item">You have not borrowed any items.</li>

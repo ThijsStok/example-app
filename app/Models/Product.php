@@ -22,6 +22,7 @@ class Product extends Model
         'borrower_id', // Indicates who is borrowing the product. Null if available.
         'lend_date', // The date when the product was lent. Null if available.
         'return_date', // The expected return date. Null if available or not applicable.
+        'state,'
     ];
 
     // Attributes that should be hidden for arrays
@@ -37,6 +38,21 @@ class Product extends Model
         'lend_date' => 'datetime',
         'return_date' => 'datetime',
     ];
+
+    public function transitionToWaitingForAcceptance()
+    {
+        $this->update(['state' => 'waiting_for_acceptance']);
+    }
+
+    public function acceptReturn()
+    {
+        $this->update([
+            'state' => 'available',
+            'borrower_id' => null,
+            'lend_date' => null,
+            'return_date' => null,
+        ]);
+    }
 
     // Example relationship: Product belongs to an owner
     public function owner()
