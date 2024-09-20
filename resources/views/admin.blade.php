@@ -8,25 +8,45 @@
         </div>
         <div class="card-body">
             @forelse ($users as $user)
-                <h5>{{ $user->name }} ({{ $user->email }})</h5>
-                <ul class="list-group mb-4">
-                    @forelse ($user->products as $product)
-                        <li class="list-group-item">
-                            Name: {{ $product->name }}
-                            <br>Category: {{ $product->category }}
-                            <br>Status: 
-                            @if ($product->state === 'available')
-                                <span class="badge badge-success">Available</span>
-                            @elseif ($product->state === 'borrowed')
-                                <span class="badge badge-warning">Borrowed</span>
-                            @elseif ($product->state === 'waiting_for_acceptance')
-                                <span class="badge badge-info">Waiting for Acceptance</span>
-                            @endif
-                        </li>
-                    @empty
-                        <li class="list-group-item">No products found for this user.</li>
-                    @endforelse
-                </ul>
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <p>{{ $user->name }}</p>
+                            <p>Email: {{ $user->email }}</p>
+                            <p>Role: {{ $user->role }}</p>
+                            <p>Created At: {{ $user->created_at }}</p>
+                            <p>Updated At: {{ $user->updated_at }}</p>
+                        </div>
+                        <form action="{{ route('admin.blockUser', $user->id) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-danger">Block User</button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <h6>Products</h6>
+                        <div class="row">
+                            @forelse ($user->products as $product)
+                                <div class="col-md-4 mb-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <p>Name: {{ $product->name }}</p>
+                                            <p>Category: {{ $product->category }}</p>
+                                            <p>Status: {{ $product->state }}</p>
+                                            <form action="{{ route('admin.removeProduct', $product->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm">Remove Item</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <p>No products found for this user.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
             @empty
                 <p>No users found.</p>
             @endforelse
