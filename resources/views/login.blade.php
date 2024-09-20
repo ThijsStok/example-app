@@ -13,6 +13,15 @@
                                 Welcome Back
                             </p>
                         </div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <form class="row gy-3" action="{{url('login')}}" method="post">
                             @csrf
                             <div class="col-12">

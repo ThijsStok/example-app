@@ -49,22 +49,26 @@ public function lendMyStuffIndex()
     ]);
 }
 
-    public function login(Request $request)
-    {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-        ]);
+public function login(Request $request)
+{
+    $this->validate($request, [
+        'email' => 'required|email',
+        'password' => 'required|min:8',
+    ]);
 
-        $credentials = $request->only('email', 'password');
+    $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($credentials)) {
-            return redirect('/');
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+        if ($user->blocked) {
+            Auth::logout();
+            return redirect('login')->withErrors(['Your account is blocked.']);
         }
-
-        session()->flash('Invalid email or password');
-        return redirect('login');
+        return redirect('/');
     }
+
+    return redirect('login')->withErrors(['Invalid email or password']);
+}
 
     public function register(Request $request)
     {
