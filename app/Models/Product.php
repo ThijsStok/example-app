@@ -25,9 +25,7 @@ class Product extends Model
         'state,'
     ];
 
-    // Attributes that should be hidden for arrays
     protected $hidden = [
-        // Example: 'secret_attribute',
     ];
 
     // Attributes that should be cast to native types
@@ -54,7 +52,6 @@ class Product extends Model
         ]);
     }
 
-    // Example relationship: Product belongs to an owner
     public function owner()
     {
         return $this->belongsTo(User::class, 'owner_id');
@@ -62,9 +59,11 @@ class Product extends Model
 
     public function borrower()
     {
-        // This relationship is optional and only relevant if the product is currently lent out.
         return $this->belongsTo(User::class, 'borrower_id');
     }
 
-    // Add other methods and relationships here as needed
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

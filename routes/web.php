@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\LendMyStuffController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Middleware\CheckAdminRole;
 use Illuminate\Support\Facades\Route;
@@ -21,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'loginIndex']);
     Route::get('register', [AuthController::class, 'registerIndex']);
-    Route::get('lendmystuff', [AuthController::class, 'lendMyStuffIndex']);
+    Route::get('lendmystuff', [AuthController::class, 'lendMyStuffIndex'])->name('lendmystuff');
     Route::get('borrowedstuff', [AuthController::class, 'borrowedstuffIndex']);
 
     Route::post('login', [AuthController::class, 'login']);
@@ -31,7 +32,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
     Route::get('logout', [AuthController::class, 'logout']);
-    Route::get('lendmystuff', [AuthController::class, 'lendMyStuffIndex']);
+    Route::get('lendmystuff', [AuthController::class, 'lendMyStuffIndex'])->name('lendmystuff');
 
     Route::patch('/return/{id}', [LendMyStuffController::class, 'returnItem'])->name('returnProduct');
     Route::patch('/products/{product}/accept-return', [LendMyStuffController::class, 'acceptReturn'])->name('acceptReturn');
@@ -39,9 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/products/{product}/remove', [LendMyStuffController::class, 'removeProduct'])->name('removeProduct');
     Route::post('/store-product', [LendMyStuffController::class, "storeNew"])->name('storeProduct');
     Route::post('/borrow', [LendMyStuffController::class, 'borrow'])->name('borrow');
-    // Route::post('/products/{product}/return', [LendMyStuffController::class, 'returnItem'])->name('products.return');
+    Route::get('/products/{product}/comments/create', [CommentController::class, 'create'])->name('comments.create');
+    Route::post('/products/{product}/comments', [CommentController::class, 'store'])->name('comments.store');
 
-    // route::get('/admin', [AdminController::class, 'index']);
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware(CheckAdminRole::class);
     Route::delete('/admin/products/{product}', [AdminController::class, 'removeProduct'])->name('admin.removeProduct');
     Route::patch('/admin/users/{user}/block', [AdminController::class, 'blockUser'])->name('admin.blockUser');

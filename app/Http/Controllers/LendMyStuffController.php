@@ -43,7 +43,8 @@ class LendMyStuffController extends Controller
         $item->state = 'waiting_for_acceptance'; // Set state to waiting for acceptance
         $item->save();
     
-        return back()->with('success', 'Return initiated, waiting for owner to accept.');
+        return redirect()->route('comments.create', ['product' => $item->id])
+        ->with('success', 'Return initiated, waiting for owner to accept. Please leave a comment.');
     }
 
     public function borrow(Request $request)
