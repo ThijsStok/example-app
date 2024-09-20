@@ -28,8 +28,7 @@ class AdminController extends Controller
         // Delete all products associated with the user
         $user->products()->delete();
 
-        // Block the user (assuming you have a 'blocked' attribute)
-        $user->blocked = true;
+        $user->blocked = !$user->blocked; 
         $user->save();
 
         return redirect()->route('admin.index')->with('success', 'User blocked and all their products removed.');

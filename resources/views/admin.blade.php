@@ -46,7 +46,9 @@
                         <form action="{{ route('admin.blockUser', $user->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="btn btn-danger">Block User</button>
+                            <button type="submit" class="btn btn-danger">
+                                {{ $user->blocked ? 'Unblock User' : 'Block User' }}
+                            </button>
                         </form>
                     </div>
                     <div class="card-body">

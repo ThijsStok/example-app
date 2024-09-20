@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware(CheckAdminRole::class);
     Route::delete('/admin/products/{product}', [AdminController::class, 'removeProduct'])->name('admin.removeProduct');
-    Route::patch('/admin/users/{user}/block', [AdminController::class, 'blockUser'])->name('admin.blockUser');
+    Route::patch('/admin/block-user/{id}', [AdminController::class, 'blockUser'])->name('admin.blockUser');
 });
 
 
