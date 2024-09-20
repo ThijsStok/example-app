@@ -37,11 +37,15 @@ public function lendMyStuffIndex()
                        ->whereNull('borrower_id') // Ensures the product is not currently lent out
                        ->get();
 
+    // Fetch all products available for borrowing
+    $availableItems = Product::where('owner_id', $userId)->where('state', 'available')->get();
+
     // Pass all data to the view
     return view('lendmystuff', [
         'products' => $products,
         'lending' => $lending,
         'borrowed' => $borrowed,
+        'availableItems' => $availableItems,
     ]);
 }
 

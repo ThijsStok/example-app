@@ -18,7 +18,8 @@ class LendMyStuffController extends Controller
     
         // Fetch products lent to the user
         $borrowed = Lend::where('borrower_id', $userId)->get();
-    
+        $availableItems = Product::where('owner_id', $userId)->where('state', 'available')->get();
+        $lending = Product::where('owner_id', $userId)->whereNotNull('borrower_id')->get();
         // Fetch all products (already existing line)
         $products = Product::all();
     
@@ -54,6 +55,7 @@ class LendMyStuffController extends Controller
             $product->borrower_id = Auth::id(); // Get the currently authenticated user's ID
             $product->lend_date = now(); // Set the lend date to now
             $product->return_date = now()->addDays(intval($request->input('lend_days')));
+            $product->state = 'borrowed'; // Set the state to borrowed
             $product->save();
 
             return redirect()->back()->with('success', 'Product borrowed successfully!');
@@ -63,20 +65,20 @@ class LendMyStuffController extends Controller
     }
 
     public function acceptReturn($id)
-{
-    $item = Product::findOrFail($id);
-    
-    // Check if the current user is the owner
-    if ($item->owner_id != auth()->id()) {
-        return back()->with('error', 'You are not authorized to accept this return.');
+    {
+        $item = Product::findOrFail($id);
+        
+        // Check if the current user is the owner
+        if ($item->owner_id != auth()->id()) {
+            return back()->with('error', 'You are not authorized to accept this return.');
+        }
+
+        $item->borrower_id = null; // Clear borrower_id
+        $item->state = 'available'; // Mark as available
+        $item->save();
+
+        return back()->with('success', 'Item return accepted.');
     }
-
-    $item->borrower_id = null; // Clear borrower_id
-    $item->state = 'available'; // Mark as available
-    $item->save();
-
-    return back()->with('success', 'Item return accepted.');
-}
 
     public function createProduct(){
         $products = Product::All();
@@ -109,5 +111,18 @@ class LendMyStuffController extends Controller
         $product->save();
     
         return redirect('/lendmystuff')->with('success', 'Product added successfully!');
+    }
+
+    public function removeProduct($id)
+    {
+        $product = Product::findOrFail($id);
+
+        // Check if the current user is the owner and the product is available
+        if ($product->owner_id == auth()->id() && $product->state == 'available') {
+            $product->delete();
+            return redirect()->back()->with('success', 'Product removed successfully.');
+        }
+
+        return redirect()->back()->with('error', 'You are not authorized to remove this product or it is not available.');
     }
 }

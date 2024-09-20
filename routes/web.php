@@ -34,10 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/return/{id}', [LendMyStuffController::class, 'returnItem'])->name('returnProduct');
     Route::patch('/products/{product}/accept-return', [LendMyStuffController::class, 'acceptReturn'])->name('acceptReturn');
     Route::get('/add-product', [LendMyStuffController::class, 'createProduct'])->name('addProductForm');
+    Route::delete('/products/{product}/remove', [LendMyStuffController::class, 'removeProduct'])->name('removeProduct');
     Route::post('/store-product', [LendMyStuffController::class, "storeNew"])->name('storeProduct');
     Route::post('/borrow', [LendMyStuffController::class, 'borrow'])->name('borrow');
     // Route::post('/products/{product}/return', [LendMyStuffController::class, 'returnItem'])->name('products.return');
-    Route::post('/products/{product}/accept-return', [LendMyStuffController::class, 'acceptReturn'])->name('products.acceptReturn');
 });
 
 
