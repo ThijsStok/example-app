@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'borrower_id');
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin'; // Adjust this condition based on your application's role management
+    }
 }
