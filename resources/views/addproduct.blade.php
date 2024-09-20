@@ -6,7 +6,6 @@
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 <script src="{{ asset('js/addproduct.js') }}"></script>
 
-
 <nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
     <a class="navbar-brand" href="{{ url('/') }}">Lend Stuff</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

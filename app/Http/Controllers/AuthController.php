@@ -81,6 +81,8 @@ public function login(Request $request)
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->blocked = false;
+        $user->role = 'user';
         $user->password = \Hash::make($request->password);
         $user->save();
 
