@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\LendMyStuffController;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\CheckAdminRole;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/store-product', [LendMyStuffController::class, "storeNew"])->name('storeProduct');
     Route::post('/borrow', [LendMyStuffController::class, 'borrow'])->name('borrow');
     // Route::post('/products/{product}/return', [LendMyStuffController::class, 'returnItem'])->name('products.return');
+
+    // route::get('/admin', [AdminController::class, 'index']);
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware(CheckAdminRole::class);
 });
 
 
