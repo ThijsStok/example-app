@@ -14,6 +14,7 @@ class Comment extends Model
 		'borrower_id',
 		'owner_id',
 		'comment',
+		'created_at'
 	];
 
 	public function product()

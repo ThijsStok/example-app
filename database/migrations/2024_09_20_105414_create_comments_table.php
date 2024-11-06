@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('borrower_id');
             $table->unsignedBigInteger('owner_id');
             $table->text('comment');
-            $table->timestamps();
+            $table->timestamps(); 
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreign('borrower_id')->references('id')->on('users')->onDelete('cascade');

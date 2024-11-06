@@ -65,12 +65,23 @@
     <div class="card-body">
         <ul class="list-group">
             @forelse ($lending as $item)
-                <li class="list-group-item">
-                    Name: {{ $item->name }}
-                    <br>Category: {{ $item->category }}
-                    <br>Lent to: {{ $item->borrower->name }}
-                    <br>Lend Date: {{ $item->lend_date->format('F d, Y') }}
-                    <br>Return Date: {{ optional($item->return_date)->format('F d, Y') ?? 'Not Available' }}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        Name: {{ $item->name }}
+                        <br>Category: {{ $item->category }}
+                        <br>Lent to: {{ $item->borrower->name }}
+                        <br>Lend Date: {{ $item->lend_date->format('F d, Y') }}
+                        <br>Return Date: {{ optional($item->return_date)->format('F d, Y') ?? 'Not Available' }}
+                    </div>
+                    @if ($item->state === 'waiting_for_acceptance')
+                        <div class="text-right">
+                            <form action="{{ route('acceptReturn', $item->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-success">Accept Return</button>
+                            </form>
+                        </div>
+                    @endif
                 </li>
             @empty
                 <li class="list-group-item">You are not lending out any items currently.</li>
